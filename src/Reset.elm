@@ -19,20 +19,18 @@ main : Program (Maybe Persistent.Model) Model Msg
 main =
     Browser.document
         { init = init
-        , view = \model -> { title = "Elm Partial Persistence Sample", body = [view model] }
+        , view = \model -> { title = "Elm Partial Persistence Sample Reset", body = [view model] }
         , update = Persistent.wrapUpdate update extractPersistentModel setPersistentState
         , subscriptions = \_ -> Sub.none
         }
 
 type alias Model =
     { persistent : Persistent.Model
-    , counter : Int
     }
 
 emptyModel : Persistent.Model -> Model
 emptyModel pm =
     { persistent = pm
-    , counter = 0
     }
 extractPersistentModel : Model -> Persistent.Model
 extractPersistentModel m =
@@ -43,48 +41,26 @@ update msg model =
     case msg of
         NoOp ->
             (model, Cmd.none)
-        Increment ->
-            ( {model | counter = model.counter + 1}
-            , Cmd.none
-            )
-        Decrement ->
-            ( {model | counter = model.counter - 1}
-            , Cmd.none
-            )
-        IncrementPersistent ->
-            ( {model | persistent = (Persistent.increment model.persistent)}
-            , Cmd.none
-            )
-        DecrementPersistent ->
-            ( {model | persistent = (Persistent.decrement model.persistent)}
+        ResetPersistent ->
+            ( {model | persistent = (Persistent.withDefault Nothing)}
             , Cmd.none
             )
     
 type Msg
     = NoOp
-    | Increment
-    | Decrement
-    | IncrementPersistent
-    | DecrementPersistent
+    | ResetPersistent
         
 view : Model -> Html Msg
 view model =
     div []
         [ div []
-              [ text "Temporary "
-              , text (String.fromInt model.counter)
-              , button [onClick Decrement] [text "-"]
-              , button [onClick Increment] [text "+"]
-              ]
-        , div []
-              [ text "Persistent "
+              [ text "Temporary counter is reset.  Persistent counter is "
               , text (String.fromInt model.persistent.counter)
-              , button [onClick DecrementPersistent] [text "-"]
-              , button [onClick IncrementPersistent] [text "+"]
+              , button [onClick ResetPersistent] [text "Reset Persistent"]
               ]
         , div []
-              [ a [href "reset.html"]
-                    [ text "Reset Counter"
+              [ a [ href "index.html" ]
+                    [ text "Done"
                     ]
               ]
         ]

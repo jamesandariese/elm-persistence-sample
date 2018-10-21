@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Elm Sample</title>
+  <script type="text/javascript" src="reset.js"></script>
+</head>
+
+<body>
+<script type="text/javascript">
+var app = Elm.Main.init({flags: (function (ls) { return ls ? JSON.parse(ls) : null })(localStorage.getItem('elm-persistent-state'))});
+
+app.ports.setPersistentState.subscribe(function(state) {
+    localStorage.setItem('elm-persistent-state', JSON.stringify(state));
+});
+</script>
+</body>
+
+</html>
+
