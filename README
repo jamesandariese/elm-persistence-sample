@@ -1,0 +1,6 @@
+A sample of partially persistent state in Elm
+
+This state is meant to travel across pages.
+
+Duplicate Index.elm and index.html to create another page which can consume and
+update the persistent state
