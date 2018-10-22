@@ -9,7 +9,12 @@
 
 <body>
 <script type="text/javascript">
-var app = Elm.Main.init({flags: (function (ls) { return ls ? JSON.parse(ls) : null })(localStorage.getItem('elm-persistent-state'))});
+var app = undefined
+try {
+    app = Elm.Main.init({flags: (function (ls) { return ls ? JSON.parse(ls) : null })(localStorage.getItem('elm-persistent-state'))});
+} catch {
+    app = Elm.Main.init({flags: null})
+}
 
 app.ports.setPersistentState.subscribe(function(state) {
     localStorage.setItem('elm-persistent-state', JSON.stringify(state));
