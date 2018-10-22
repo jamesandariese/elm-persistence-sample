@@ -4,3 +4,9 @@ This state is meant to travel across pages.
 
 Duplicate Index.elm and index.html to create another page which can consume and
 update the persistent state
+
+
+Building ---
+
+elm make --output=index.js src/Index.elm
+elm make --output=reset.js src/Reset.elm
